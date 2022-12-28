@@ -1,0 +1,11 @@
+FROM golang:1.17.13 as builder
+ENV GOPROXY=https://goproxy.cn,direct
+COPY . /go-web-demo
+RUN cd /go-web-demo/src && go build -o demo
+
+FROM ubuntu:20.04
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+COPY --from=builder /go-web-demo/src/demo /go-web-demo/src/demo
+WORKDIR /go-web-demo
+VOLUME [ "/go-web-demo/log","/go-web-demo/conf"]
