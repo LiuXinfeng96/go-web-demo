@@ -2,7 +2,6 @@ package services
 
 import (
 	"go-web-demo/src/configs"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -10,13 +9,11 @@ import (
 )
 
 type Server struct {
-	ginEngine     *gin.Engine
-	config        *configs.Config
-	log           *zap.Logger
-	sulog         *zap.SugaredLogger
-	gormDb        *gorm.DB
-	retryTime     int
-	retryInterval time.Duration
+	ginEngine *gin.Engine
+	config    *configs.Config
+	log       *zap.Logger
+	sulog     *zap.SugaredLogger
+	gormDb    *gorm.DB
 }
 
 type Option func(s *Server)
@@ -54,8 +51,6 @@ func WithGormDb(db *gorm.DB) Option {
 
 func NewServer(opts ...Option) (*Server, error) {
 	server := new(Server)
-	server.retryTime = 3
-	server.retryInterval = time.Millisecond * 1000
 	for _, opt := range opts {
 		opt(server)
 	}
